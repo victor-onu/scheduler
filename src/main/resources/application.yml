@@ -25,5 +25,4 @@ spring:
 file:
   upload-dir: ./uploads
   upload-dir-tmp: uploads/tmp
-  document: index.jpg
 

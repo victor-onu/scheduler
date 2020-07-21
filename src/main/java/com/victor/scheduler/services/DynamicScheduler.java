@@ -105,6 +105,7 @@ public class DynamicScheduler implements SchedulingConfigurer {
     public void scheduleFixed(int frequency) {
         LOGGER.info("scheduleFixed: Next execution time of this will always be {} seconds", frequency);
     }
+
     // This is the main method I am sending the scheduled report as an attached file
     // Only reason this method gets the cron as parameter is for debug purposes.
     public void scheduleCron(String cron) {
@@ -121,10 +122,7 @@ public class DynamicScheduler implements SchedulingConfigurer {
          mailService.sendSimpleMessage(mail, model);
     }
 
-    /**
-     * @param mayInterruptIfRunning {@code true} if the thread executing this task
-     * should be interrupted; otherwise, in-progress tasks are allowed to complete
-     */
+
     public void cancelFuture(boolean mayInterruptIfRunning, ScheduledFuture future) {
         LOGGER.info("Cancelling a future");
         future.cancel(mayInterruptIfRunning); // set to false if you want the running task to be completed first.
