@@ -1,5 +1,6 @@
 package com.victor.scheduler.services;
 
+import com.victor.scheduler.config.FileStorageProperties;
 import com.victor.scheduler.config.Setting;
 import com.victor.scheduler.dtos.MailDto;
 import com.victor.scheduler.dtos.ReportDto;
@@ -7,16 +8,18 @@ import com.victor.scheduler.exceptions.CustomUniqueConstraintViolationException;
 import com.victor.scheduler.models.Report;
 import com.victor.scheduler.repositories.RecipientRepository;
 import com.victor.scheduler.repositories.ReportRepository;
+import com.victor.scheduler.services.storage.FileStorageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import java.util.Collection;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -33,26 +36,30 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private RecipientRepository recipientRepository;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @Autowired
+    private ReportService reportService;
+
+    @Autowired
+    private FileStorageProperties fileStorageProperties;
+
     @Override
-    public Report uploadReport(ReportDto reportDto) {
+    public Report uploadReport(ReportDto reportDto, MultipartFile multipartFile) {
         if (reportRepository.existsByReportTitle(reportDto.getReportTitle())){
             throw new CustomUniqueConstraintViolationException("Report title already exists");
         }
         Report report = new Report();
         this.modelMapper.map(reportDto, report);
-        return reportRepository.save(report);
-    }
+        reportRepository.save(report);
 
-//    @Scheduled(initialDelay = 2000L, fixedDelay = 5000L)
-//    void ScheduleOneOff() throws InterruptedException {
-//        String[] allEmail = recipientRepository.allEmail();
-//        MailDto mail = MailDto.builder().mailFrom(Setting.FROM_EMAIL).mailTo(allEmail).mailSubject("Subject")
-//                .mailTemplateName("report-email-template.ftl").build();
-//        Map<String, Object> model = new HashMap<String, Object>();
-////        model.put("name", user.getFirstName());
-////        model.put("password", dto.getPassword());
-////        model.put("username", user.getEmail());
-//        // send mail
-//         mailService.sendSimpleMessage(mail, model);
-//    }
+        String filePath = null;
+        filePath = fileStorageService.storeFile(multipartFile);
+        report.setURl(filePath);
+        report.setReportDocument(multipartFile.getOriginalFilename());
+        System.out.println(filePath);
+        reportRepository.save(report);
+        return report;
+    }
 }

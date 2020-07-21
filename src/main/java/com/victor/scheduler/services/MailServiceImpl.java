@@ -9,7 +9,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
@@ -34,6 +38,13 @@ public class MailServiceImpl implements MailService {
 	    helper.setText(emailTemplateEngine.processTemplateIntoString(mail.getMailTemplateName(), model), true);
 	    helper.setSubject(mail.getMailSubject());
 	    helper.setFrom(mail.getMailFrom());
+
+		Multipart emailContent = new MimeMultipart();
+		MimeBodyPart fileAttachment = new MimeBodyPart();
+		fileAttachment.attachFile(mail.getAttachments());
+		emailContent.addBodyPart(fileAttachment);
+		message.setContent(emailContent);
+
 
 	    emailSender.send(message);
 	} catch (MessagingException e) {

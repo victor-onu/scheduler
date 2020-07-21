@@ -31,13 +31,5 @@ public class Recipient {
     @Column(name = "email", unique = true, nullable = false, length = 100)
     private String email;
 
-    @DateTimeFormat
-    private Date startDate;
-
-    @DateTimeFormat
-    private Date endDate;
-
-    @Enumerated(EnumType.STRING)
-    private Oneoff status;
 
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class MailDto {
 
     private String contentType;
 
-    private List<Object> attachments;
+    private File attachments;
 
     private Map<String, Object> model;
      

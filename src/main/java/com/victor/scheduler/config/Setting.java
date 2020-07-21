@@ -6,6 +6,5 @@ public class Setting {
 
     public final static String INVITATION_EMAIL_SUBJECT= "Accept Invitation";
 
-
-    public static final String[] TO_EMAIL = new String[]{"victoronushaibu@gmail.com", "onu.shaibu@decagon.dev"};
+    public final static String Document= "index.jpg";
 }

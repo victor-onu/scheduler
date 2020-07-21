@@ -10,7 +10,10 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDto {
-    //@NotBlank(message = "Report title cannot be empty")
+    @NotBlank(message = "Report title cannot be empty")
     private String reportTitle;
     private String reportDescription;
+    @NotBlank(message = "Report schedule expression cannot be empty")
+    private String scheduleExpression;
+
 }

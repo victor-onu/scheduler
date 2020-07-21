@@ -4,9 +4,10 @@ import com.victor.scheduler.dtos.ReportDto;
 import com.victor.scheduler.models.Report;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
 public interface ReportService {
-    Report uploadReport(ReportDto reportDto);
+    Report uploadReport(ReportDto reportDto, MultipartFile multipartFile);
 }

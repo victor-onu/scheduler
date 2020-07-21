@@ -18,10 +18,11 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@NotBlank(message = "Report title cannot be empty")
+    @NotBlank(message = "Report title cannot be empty")
     private String reportTitle;
     private String reportDescription;
     private String URl;
     private String reportDocument;
     private String status = "ACTIVE";
+    private String scheduleExpression;
 }
