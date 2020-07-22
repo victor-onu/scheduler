@@ -20,9 +20,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.ScheduledFuture;
 
 /**
@@ -74,26 +72,26 @@ public class DynamicScheduler implements SchedulingConfigurer {
         if (taskRegistrar.getScheduler() == null) {
             taskRegistrar.setScheduler(poolScheduler2());
         }
-//
-//        if (future1 == null || (future1.isCancelled() && futureMap.get(future1) == true)) {
-//            future1 = taskRegistrar.getScheduler().schedule(() -> scheduleFixed(5), t -> {
-//                Calendar nextExecutionTime = new GregorianCalendar();
-//                Date lastActualExecutionTime = t.lastActualExecutionTime();
-//                nextExecutionTime.setTime(lastActualExecutionTime != null ? lastActualExecutionTime : new Date());
-//                nextExecutionTime.add(Calendar.SECOND, 5);
-//                return nextExecutionTime.getTime();
-//            });
-//        }
 
-//        if (future2 == null || (future2.isCancelled() && futureMap.get(future2) == true)) {
-//            future2 = taskRegistrar.getScheduler().schedule(() -> scheduleFixed(8), t -> {
-//                Calendar nextExecutionTime = new GregorianCalendar();
-//                Date lastActualExecutionTime = t.lastActualExecutionTime();
-//                nextExecutionTime.setTime(lastActualExecutionTime != null ? lastActualExecutionTime : new Date());
-//                nextExecutionTime.add(Calendar.SECOND, 8);
-//                return nextExecutionTime.getTime();
-//            });
-//        }
+        if (future1 == null || (future1.isCancelled() && futureMap.get(future1) == true)) {
+            future1 = taskRegistrar.getScheduler().schedule(() -> scheduleFixed(5), t -> {
+                Calendar nextExecutionTime = new GregorianCalendar();
+                Date lastActualExecutionTime = t.lastActualExecutionTime();
+                nextExecutionTime.setTime(lastActualExecutionTime != null ? lastActualExecutionTime : new Date());
+                nextExecutionTime.add(Calendar.DATE, 5);
+                return nextExecutionTime.getTime();
+            });
+        }
+
+        if (future2 == null || (future2.isCancelled() && futureMap.get(future2) == true)) {
+            future2 = taskRegistrar.getScheduler().schedule(() -> scheduleFixed(8), t -> {
+                Calendar nextExecutionTime = new GregorianCalendar();
+                Date lastActualExecutionTime = t.lastActualExecutionTime();
+                nextExecutionTime.setTime(lastActualExecutionTime != null ? lastActualExecutionTime : new Date());
+                nextExecutionTime.add(Calendar.SUNDAY, 8);
+                return nextExecutionTime.getTime();
+            });
+        }
 
         // Or cron way, you can also get the expression from DB or somewhere else just like we did in DynamicScheduler service.
         if (future3 == null || (future3.isCancelled() && futureMap.get(future3) == true)) {
