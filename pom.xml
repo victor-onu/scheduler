@@ -20,14 +20,11 @@
 
     <distributionManagement>
         <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>corp1</id>
-            <name>Corporate Repository</name>
-            <url>scp://repo/maven4</url>
-            <layout>default</layout>
+            <id>internal.repo</id>
+            <name>Internal repo</name>
+            <url>file:///home/thara/testesb/in</url>
         </repository>
     </distributionManagement>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
