@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Footer from './components/Footer';
 import Recipient from './components/Recipient';
 import Welcome from './components/Welcome';
+import ReportList from './components/ReportList';
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
               <Switch>
                 <Route path="/" exact component={Welcome}  />
                 <Route path="/addRecipient" exact component={Recipient}  />
-                {/* <Route path="/list" exact component={BookList}  />  */}
+                <Route path="/Reportlist" exact component={ReportList}  />  
               </Switch>
 
             </Col>

@@ -1,26 +1,20 @@
 package com.victor.scheduler.services;
 
 import com.victor.scheduler.config.FileStorageProperties;
-import com.victor.scheduler.config.Setting;
-import com.victor.scheduler.dtos.MailDto;
 import com.victor.scheduler.dtos.ReportDto;
 import com.victor.scheduler.exceptions.CustomUniqueConstraintViolationException;
+import com.victor.scheduler.exceptions.ResourceNotFoundException;
 import com.victor.scheduler.models.Report;
 import com.victor.scheduler.repositories.RecipientRepository;
 import com.victor.scheduler.repositories.ReportRepository;
 import com.victor.scheduler.services.storage.FileStorageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
 
 @Service
 @Transactional
@@ -61,5 +55,15 @@ public class ReportServiceImpl implements ReportService {
         System.out.println(filePath);
         reportRepository.save(report);
         return report;
+    }
+
+    @Override
+    public Collection<Report> findAllReports() {
+        Collection<Report> allReports = reportRepository
+                .findAll();
+        if (allReports.isEmpty()){
+            throw new ResourceNotFoundException("Invite list is empty");
+        }
+        return allReports;
     }
 }

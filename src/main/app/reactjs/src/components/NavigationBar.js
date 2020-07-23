@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Navbar, Nav, Button} from 'react-bootstrap';
+import {Navbar, Nav} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
 
 export default class NavigationBar extends Component {
@@ -13,6 +13,7 @@ export default class NavigationBar extends Component {
                 <Nav className="mr-auto">
                     <Link to={"/addRecipient"} className="nav-link">Add Recipient</Link>
                     <Link to={"/addReport"} className="nav-link">Upload Report</Link>
+                    <Link to={"/ReportList"} className="nav-link">View Reports</Link>
                 </Nav>
         
             </Navbar>

@@ -22,9 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping(value = "/api")
+@CrossOrigin(origins = "http://localhost:3000/")
 public class ReportController {
     private static final Logger logger = LoggerFactory.getLogger(ReportController.class);
     @Autowired
@@ -44,13 +46,23 @@ public class ReportController {
             ) throws JsonProcessingException {
 
         ReportDto reportDto  = new ObjectMapper().readValue(title, ReportDto.class);
-        ApiResponse<Report> ar = new ApiResponse<>(HttpStatus.OK);
+        ApiResponse<Report> response = new ApiResponse<>(HttpStatus.OK);
         Report report = reportService.uploadReport(reportDto, multipartFile);
-        ar = new ApiResponse<>(HttpStatus.OK);
-        ar.setMessage("Upload successful");
-        ar.setData(report);
-        return new ResponseEntity<>(ar, HttpStatus.CREATED);
+        response = new ApiResponse<>(HttpStatus.OK);
+        response.setMessage("Upload successful");
+        response.setData(report);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+    @GetMapping("/report")
+    public ResponseEntity<ApiResponse<Collection<Report>>> getAllReports(){
+        Collection<Report> allReports = reportService.findAllReports();
+        ApiResponse<Collection<Report>> response = new ApiResponse<>(HttpStatus.OK);
+        response.setMessage("Retrieved Reports successfully");
+        response.setData(allReports);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
 
     @GetMapping("/uploads/{fileName:.+}")
     public ResponseEntity <Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
@@ -75,6 +87,8 @@ public class ReportController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
+
+
 
 
 }
